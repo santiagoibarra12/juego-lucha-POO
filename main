@@ -1,0 +1,11 @@
+package main;
+
+import patrones.JuegoFachada;
+
+public class Main {
+    public static void main(String[] args) {
+        // La ejecución queda completamente limpia gracias al patrón Facade
+        JuegoFachada partida = new JuegoFachada();
+        partida.comenzarBatalla();
+    }
+}

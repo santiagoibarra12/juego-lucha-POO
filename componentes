@@ -1,0 +1,14 @@
+package componentes;
+
+public class Armadura {
+    private final String rareza;
+    private final double porcentajeReduccion;
+
+    public Armadura(String rareza, double porcentajeReduccion) {
+        this.rareza = rareza;
+        this.porcentajeReduccion = porcentajeReduccion;
+    }
+
+    public double getPorcentajeReduccion() { return porcentajeReduccion; }
+    public String getRareza() { return rareza; }
+}

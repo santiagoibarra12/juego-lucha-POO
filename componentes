@@ -12,3 +12,48 @@ public class Armadura {
     public double getPorcentajeReduccion() { return porcentajeReduccion; }
     public String getRareza() { return rareza; }
 }
+package componentes;
+
+import modelos.Personaje;
+
+public abstract class Poder {
+    protected String tipo;
+    
+    public Poder(String tipo) { 
+        this.tipo = tipo; 
+    }
+    
+    public abstract void ejecutarEfecto(Personaje p);
+    
+    public String getTipo() { return tipo; }
+}
+package componentes;
+
+import modelos.Personaje;
+
+public class PoderCuracion extends Poder {
+    public PoderCuracion() { 
+        super("Curación"); 
+    }
+    
+    @Override
+    public void ejecutarEfecto(Personaje p) {
+        p.setPuntosDeVida(p.getPuntosDeVida() + 10);
+        if (p.getPuntosDeVida() > 100) p.setPuntosDeVida(100);
+        System.out.println("¡Poder de Curación! " + p.getNombre() + " recupera 10 HP.");
+    }
+}
+package componentes;
+
+import modelos.Personaje;
+
+public class PoderDano extends Poder {
+    public PoderDano() { 
+        super("Aumento de Daño"); 
+    }
+    
+    @Override
+    public void ejecutarEfecto(Personaje p) {
+        System.out.println(">>> " + p.getNombre() + " tiene el Poder de Daño activo (+10%).");
+    }
+}

@@ -1,0 +1,53 @@
+package motor;
+
+import modelos.Personaje;
+import componentes.*;
+import java.util.Random;
+
+public class JuegoLucha {
+    private final Personaje p1;
+    private final Personaje p2;
+    private final Random rand = new Random();
+
+    public JuegoLucha(Personaje p1, Personaje p2) {
+        this.p1 = p1;
+        this.p2 = p2;
+    }
+
+    private void procesarSuerteDelTurno(Personaje p) {
+        if (rand.nextInt(100) < 25) { 
+            int suerte = rand.nextInt(3);
+            if (suerte == 0) {
+                double[] reducciones = {0.05, 0.15, 0.25};
+                String[] rarezas = {"Común", "Épica", "Mítica"};
+                int idx = rand.nextInt(3);
+                p.equiparArmadura(new Armadura(rarezas[idx], reducciones[idx]));
+                System.out.println(">>> " + p.getNombre() + " halló una Armadura " + rarezas[idx]);
+            } else if (suerte == 1) {
+                Poder curar = new PoderCuracion();
+                curar.ejecutarEfecto(p);
+            } else {
+                Poder dano = new PoderDano();
+                p.activarPoder(dano);
+                dano.ejecutarEfecto(p);
+            }
+        }
+    }
+
+    public void iniciarPelea() {
+        System.out.println("=== BATALLA INICIADA VÍA FACADE ===");
+        while (p1.estaVivo() && p2.estaVivo()) {
+            procesarSuerteDelTurno(p1);
+            p1.atacar(p2);
+            
+            if (p2.estaVivo()) {
+                procesarSuerteDelTurno(p2);
+                p2.atacar(p1);
+            }
+            System.out.println("HP: " + p1.getNombre() + " (" + p1.getPuntosDeVida() + ") | " + 
+                               p2.getNombre() + " (" + p2.getPuntosDeVida() + ")");
+            System.out.println("------------------------------------------------");
+        }
+        System.out.println("GANADOR: " + (p1.estaVivo() ? p1.getNombre() : p2.getNombre()));
+    }
+}

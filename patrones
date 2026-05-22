@@ -1,0 +1,58 @@
+package patrones;
+
+import modelos.Devimon;
+import modelos.Angemon;
+import componentes.Armadura;
+import componentes.Poder;
+
+public class PersonajeBuilder {
+    private String nombre;
+    private String caracteristica;
+    private Armadura armadura;
+    private Poder poder;
+
+    public PersonajeBuilder setNombre(String nombre) { this.nombre = nombre; return this; }
+    public PersonajeBuilder setCaracteristica(String caracteristica) { this.caracteristica = caracteristica; return this; }
+    public PersonajeBuilder setArmadura(Armadura armadura) { this.armadura = armadura; return this; }
+    public PersonajeBuilder setPoder(Poder poder) { this.poder = poder; return this; }
+
+    public Devimon buildDevimon() {
+        Devimon d = new Devimon(this.nombre, this.caracteristica);
+        if (this.armadura != null) d.equiparArmadura(this.armadura);
+        if (this.poder != null) d.activarPoder(this.poder);
+        return d;
+    }
+
+    public Angemon buildAngemon() {
+        Angemon a = new Angemon(this.nombre, this.caracteristica);
+        if (this.armadura != null) a.equiparArmadura(this.armadura);
+        if (this.poder != null) a.activarPoder(this.poder);
+        return a;
+    }
+}
+package patrones;
+
+import modelos.Personaje;
+import motor.JuegoLucha;
+
+public class JuegoFachada {
+    private JuegoLucha juego;
+
+    public JuegoFachada() {
+        PersonajeBuilder builder = new PersonajeBuilder();
+        
+        Personaje devimon = builder.setNombre("Devimon")
+                                   .setCaracteristica("Maldad")
+                                   .buildDevimon();
+                                   
+        Personaje angemon = builder.setNombre("Angemon")
+                                   .setCaracteristica("Esperanza")
+                                   .buildAngemon();
+
+        this.juego = new JuegoLucha(devimon, angemon);
+    }
+
+    public void comenzarBatalla() {
+        juego.iniciarPelea();
+    }
+}
